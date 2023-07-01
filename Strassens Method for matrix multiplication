@@ -1,0 +1,69 @@
+import time
+def strassen (A,B):
+	n=len(A)
+	if n==1:
+		return[[A[0][0]*B[0][0]]]
+	mid=n//2
+	A11=[row[:mid]for row in A[:mid]]
+	A12=[row[mid:]for row in A[:mid]]
+	A21=[row[:mid]for row in A[mid:]]
+	A22=[row[mid:]for row in A[mid:]]
+	B11=[row[:mid]for row in B[:mid]]
+	B12=[row[mid:]for row in B[:mid]]
+	B21=[row[:mid]for row in B[mid:]]
+	B22=[row[mid:]for row in B[mid:]]
+
+	P1=strassen(A11,subtract(B12,B22))
+	P2=strassen(add(A11,A12),B22)
+	P3=strassen(add(A21,A22),B11)
+	P4=strassen(A22,subtract(B21,B11))
+	P5=strassen(add(A11,A22),add(B11,B22))
+	P6=strassen(subtract(A12,A22),add(B21,B22))
+	P7=strassen(subtract(A11,A21),add(B11,B12))
+
+	C11=add(subtract(add(P5,P4),P2),P6)
+	C12=add(P1,P2)
+	C21=add(P3,P4)
+	C22=subtract(subtract(add(P5,P1),P3),P7)
+
+	C = [[0]*n for _  in range(n)]
+	for i in range(mid):
+		for j in range (mid):
+			C[i][j]=C11[i][j]
+			C[i][j+mid]=C12[i][j]
+			C[i+mid][j]=C21[i][j]
+			C[i+mid][j+mid]=C22[i][j]
+	return C
+def subtract(A,B):
+	n=len(A)
+	C=[[0]*n for _ in range(n)]
+	for i in range(n):
+		for j in range(n):
+			C[i][j]=A[i][j]-B[i][j]
+	return C
+def add(A,B):
+	n=len(A)
+	C=[[0]*n for _  in range(n)]
+	for i in range(n):
+		for j in range(n):
+			C[i][j]=A[i][j]+B[i][j]
+	return C
+n=int(input("enter size of matrix="))
+A=[[int(input(f"Enter element A[{i}][{j}]:"))for j in range(n)]for i in range(n)]
+B=[[int(input(f"Enter element B[{i}][{j}]:"))for j in range(n)]for i in range(n)]
+start_time=time.time()
+
+C = strassen(A,B)
+
+end_time=time.time()
+print("Matrix A")
+for row in A:
+	print(row)
+print("Matrix B")
+for row in B:
+	print(row)
+print("Matrix C(A*B):")
+for row in C:
+	print(row)
+
+print(f"execution time:{end_time-start_time}seconds")
