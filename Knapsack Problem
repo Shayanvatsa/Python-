@@ -1,0 +1,32 @@
+x=int(input("Enter the number of items : "))
+maxwt=int(input("Max weight : "))
+profit=list(map(int,input("Enter the profit value : ").split()))
+weight=list(map(int,input("enter the weight : ").split()))
+items=[]
+w=0
+max_profit=0
+ppw=[]
+for i in range(x):
+        ppw.append(profit[i]/weight[i])
+list=[]
+for i in range(x):
+        list.append(ppw.index(max(ppw)))
+        ppw[ppw.index(max(ppw))]=0
+i=0
+print("Items in knapsack : ")
+print("Items\tWeight\tProfit value")
+while w!=maxwt:
+        if(w+weight[list[i]])<=maxwt:
+                max_profit+=profit[list[i]]
+                w+=weight[list[i]]
+                print("%d\t%d\t%d\t\t"%(list[i]+1,weight[list[i]],profit[list[i]]))
+        else:
+                fraction=(maxwt-w)/weight[list[i]]
+                value=profit[list[i]]*fraction
+                max_profit==value
+                items=list[i]
+                print("%d\t%d\t%0.2f\t\t"%(list[i]+1,weight[list[i]],value))
+        i+=1
+print("Max profit = %0.2f" % max_profit)
+
+
